@@ -29,7 +29,6 @@ public class Salle {
           } else {
               indiceSeanceEnCours = indiceSeanceEnCours + 1;
           }
-
     }
     
     public boolean derniereSeance() {

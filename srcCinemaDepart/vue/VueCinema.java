@@ -1,25 +1,24 @@
 package vue;
 
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import modele.Cinema;
+import modele.Undo.AcheterCommande;
+import modele.Undo.Commande;
 import modele.Film;
 
-import modele.Salle;
 import CinemaExceptions.ErreurSalle;
 import CinemaExceptions.ErreurSeanceEnCours;
 
 import CinemaExceptions.NombrePlacesErreur;
 import CinemaExceptions.SaisieEntierException;
+import modele.Undo.Invocateur;
 
-public class VueCinema {
+public class VueCinema implements Commande {
     private Cinema leCinema;
+	private Invocateur invocateur = new Invocateur();
 
     public VueCinema(Cinema bib) {
 	this.leCinema = bib;
@@ -33,9 +32,10 @@ public class VueCinema {
 	    System.out.println("3 :cloturer la seance courante d'une salle ");
 	    System.out.println("4:acheter des billets");
 	    System.out.println("5 : afficher le cinema");
-	    System.out.println("6 : quitter");
+	    System.out.println("6 : undo");
+		System.out.println("7 : undo");
 	    System.out.println("   Entrez votre choix: ");
-	    rep = UtilSaisie.lireEntierPositifInferieurA(8);
+	    rep = UtilSaisie.lireEntierPositifInferieurA(9);
 	} catch (SaisieEntierException e) {
 	    System.out.println(e.getMessage());
 	    menuEtSaisie();
@@ -69,12 +69,12 @@ public class VueCinema {
 		System.out.println(leCinema);
 		break;
 	    }
-	    //	    case (6): {
-	    //		invocateur.undo();
-	    //		break;
-	    //	    }
-
 	    case (6): {
+	    invocateur.undo();
+	    break;
+	    }
+
+	    case (7): {
 		System.out.println("au revoir");
 		encore = false;
 		break;
@@ -108,6 +108,9 @@ public class VueCinema {
 	    System.out.println(
 		    "il ne devrait pas y avoir d'erreur de ce type ...");
 	}
+
+		AcheterCommande acheterCommande = new AcheterCommande(leCinema, nbBillets, numSalle);
+		invocateur.executeCommande(acheterCommande);
     }
 
     private void cloturer() {
@@ -163,4 +166,14 @@ public class VueCinema {
 	else
 	    System.out.println("les seances ne sont pas toutes terminees");
     }
+
+	@Override
+	public void execute() {
+
+	}
+
+	@Override
+	public void undo() {
+
+	}
 }

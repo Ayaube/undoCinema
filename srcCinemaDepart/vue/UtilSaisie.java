@@ -22,7 +22,7 @@ public class UtilSaisie {
 	    throw new SaisieEntierException(chaineEntier + " pas un nombre ");
 	}
 	if (nombre < 0) {
-	    throw new SaisieEntierException("l'entier doit �tre positif");
+	    throw new SaisieEntierException("l'entier doit etre positif");
 	}
 	return nombre;
     }
