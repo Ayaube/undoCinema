@@ -24,62 +24,61 @@ public class VueCinema implements Commande {
 	this.leCinema = bib;
     }
 
-    public int menuEtSaisie() {
-	int rep = 0;
-	try {
-	    System.out.println("1: creer la programmation");
-	    System.out.println("2 : demarrer la journee ");
-	    System.out.println("3 :cloturer la seance courante d'une salle ");
-	    System.out.println("4:acheter des billets");
-	    System.out.println("5 : afficher le cinema");
-	    System.out.println("6 : undo");
-		System.out.println("7 : undo");
-	    System.out.println("   Entrez votre choix: ");
-	    rep = UtilSaisie.lireEntierPositifInferieurA(9);
-	} catch (SaisieEntierException e) {
-	    System.out.println(e.getMessage());
-	    menuEtSaisie();
+	public int menuEtSaisie() {
+		int rep = 0;
+		try {
+			System.out.println("1: creer la programmation");
+			System.out.println("2 : demarrer la journee ");
+			System.out.println("3 : cloturer la seance courante d'une salle ");
+			System.out.println("4 : acheter des billets");
+			System.out.println("5 : afficher le cinema");
+			System.out.println("6 : undo");
+			System.out.println("7 : redo"); // Correction ici pour "redo"
+			System.out.println("8 : quitter"); // Ajout d'une option pour quitter
+			System.out.println("   Entrez votre choix: ");
+			rep = UtilSaisie.lireEntierPositifInferieurA(9);
+		} catch (SaisieEntierException e) {
+			System.out.println(e.getMessage());
+			menuEtSaisie();
+		}
+		return rep;
 	}
-	return rep;
-    }
 
-    public void go() {
-
-	boolean encore = true;
-	while (encore) {
-	    int choix = menuEtSaisie();
-	    switch (choix) {
-	    case (1): {
-		faireProgrammation();
-		break;
-	    }
-	    case (2): {
-		demarrerJournee();
-		break;
-	    }
-	    case (3): {
-		cloturer();
-		break;
-	    }
-	    case (4): {
-		acheter();
-		break;
-	    }
-	    case (5): {
-		System.out.println(leCinema);
-		break;
-	    }
-	    case (6): {
-	    invocateur.undo();
-	    break;
-	    }
-
-	    case (7): {
-		System.out.println("au revoir");
-		encore = false;
-		break;
-	    }
-	    }
+	public void go() {
+		boolean encore = true;
+		while (encore) {
+			int choix = menuEtSaisie();
+			switch (choix) {
+				case 1:
+					faireProgrammation();
+					break;
+				case 2:
+					demarrerJournee();
+					break;
+				case 3:
+					cloturer();
+					break;
+				case 4:
+					acheter();
+					break;
+				case 5:
+					System.out.println(leCinema);
+					break;
+				case 6:
+					invocateur.undo();
+					break;
+				case 7:
+					invocateur.redo();
+					break;
+				case 8:
+					System.out.println("Au revoir");
+					encore = false;
+					break;
+				default:
+					System.out.println("Option non reconnue, veuillez réessayer.");
+					break;
+			}
+		}
 	}
 
     }

@@ -14,6 +14,7 @@ import CinemaExceptions.NombrePlacesErreur;
 public class Cinema {
     private List<Salle> salles;
 
+
     public Cinema(List<Integer> capacitesDesSalles) throws ErreurCapacite {
 	if (capacitesDesSalles.size() == 0) {
 	    throw new ErreurCapacite(
@@ -27,9 +28,26 @@ public class Cinema {
 		.collect(Collectors.toList());
     }
 
+
+
     public Cinema() {
 	// TODO Auto-generated constructor stub
     }
+
+	public void demarrerJournee() throws ErreurSeanceEnCours {
+		// Vérifier si toutes les salles ont terminé leurs séances
+		for (Salle salle : salles) {
+			if (salle.getSeanceEnCours() != -1) {
+				throw new ErreurSeanceEnCours("Toutes les séances ne sont pas terminées.");
+			}
+		}
+
+		// Réinitialiser les séances en cours et le nombre de places disponibles
+		for (Salle salle : salles) {
+			salle.setSeanceEnCours(0);
+			salle.reinitialiserPlacesDisponibles();
+		}
+	}
 
     public boolean journeeFinie() {
 	return salles.stream().allMatch(salle -> salle.pasDeseanceEnCours());
@@ -65,16 +83,20 @@ public class Cinema {
 	return salles;
     }
 
-    public void acheter(int nbBillets, int numSalle)
-	    throws ErreurSalle, NombrePlacesErreur, ErreurSeanceEnCours {
-	Salle s = this.getSalle(numSalle);
-	s.acheterSeanceEnCours(nbBillets);
-    }
+	public boolean acheter(int nbBillets, int numSalle) throws ErreurSalle, NombrePlacesErreur, ErreurSeanceEnCours {
+		Salle salle = this.getSalle(numSalle);
+		try {
+			salle.acheterSeanceEnCours(nbBillets);
+			return true; // Achat réussi
+		} catch (NombrePlacesErreur e) {
+			return false; // Achat échoué car pas assez de places
+		}
+	}
 
-    public void cloturerSeanceEnCours(int numSalle)
-	    throws ErreurSeanceEnCours, ErreurSalle {
-	this.getSalle(numSalle).finirSeance();
-    }
+	public void cloturerSeanceEnCours(int numSalle) throws ErreurSeanceEnCours, ErreurSalle {
+		Salle salle = this.getSalle(numSalle);
+		salle.finirSeance();
+	}
 
     public void demarrerJournee() throws ErreurSeanceEnCours {
 	// si une salle n'est pas a -1, il ne faut toucher aucune salle :

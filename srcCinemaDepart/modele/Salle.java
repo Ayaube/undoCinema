@@ -30,6 +30,12 @@ public class Salle {
               indiceSeanceEnCours = indiceSeanceEnCours + 1;
           }
     }
+
+    public void reinitialiserPlacesDisponibles() {
+        for (Seance seance : seances) {
+            seance.setPlacesDisponibles(capacite);
+        }
+    }
     
     public boolean derniereSeance() {
         return indiceSeanceEnCours == seances.size() - 1;
@@ -87,9 +93,14 @@ public class Salle {
     }
 
     // pour les tests
-    public Seance getSeance(int indice) {
-	return this.seances.get(indice);
+    public Seance getSeance(int indice) throws ErreurSeanceEnCours {
+        if (indice >= 0 && indice < seances.size()) {
+            return seances.get(indice);
+        } else {
+            throw new ErreurSeanceEnCours("Séance non trouvée ou terminée");
+        }
     }
+
 
     // Pour les tests 
     public void setSeanceEnCours(int seanceEnCours) throws ErreurSeanceEnCours {

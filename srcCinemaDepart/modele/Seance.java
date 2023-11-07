@@ -19,8 +19,8 @@ public class Seance {
 	return film;
     }
 
-    public void setPlacesDisponible(int placesDisponible) {
-	this.placesDisponible = placesDisponible;
+    public void setPlacesDisponibles(int places) {
+        this.placesDisponibles = places;
     }
 
     public void acheter(int nbBillets) throws NombrePlacesErreur {
